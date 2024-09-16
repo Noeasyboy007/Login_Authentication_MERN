@@ -1,7 +1,11 @@
 
 
 const signup = async (req, res) => {
-    res.send("signup route")
+   try {
+    
+   } catch (error) {
+    
+   }
 }
 
 const login = async (req, res) => {
