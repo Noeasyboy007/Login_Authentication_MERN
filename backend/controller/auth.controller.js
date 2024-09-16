@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 
 const userModel = require('../models/user.model');
 const generateVerificationToken = require('../utils/generateVerificationToken');
+const generateTokenAndSetCookie = require('../utils/generateTokenAndSetCookie');
 
 
 const signup = async (req, res) => {
@@ -15,6 +16,8 @@ const signup = async (req, res) => {
 
         // Check if email already exists
         const userAlreadyExists = await userModel.findOne({ email });
+        // console.log("user already exists", userAlreadyExists);
+
         if (userAlreadyExists) {
             return res.status(400).json({ success: false, message: "Email already exists" });
         }
@@ -25,15 +28,27 @@ const signup = async (req, res) => {
         // For Verification Code
         const verificationToken = generateVerificationToken();
 
-        const user = new User({
+        // for Saved the user 
+        const user = new userModel({
             name,
             email,
             password: hashedPassword,
             verificationToken,
             verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // for 24 Hours
         })
-        
         await user.save();
+
+        // Set JWT Token
+        generateTokenAndSetCookie(res, user._id);
+
+        // For response Messege Code
+        res.status(201).json({
+            success: true, message: "New User signup successfully",
+            user: {
+                ...user._doc,
+                password: undefined,
+            }
+        });
         console.log("New User saved Sucessfully");
 
     } catch (error) {
