@@ -11,13 +11,9 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-app.get("/", (req, res) => {
-    res.send("Welcome");
-})
-
 app.use("/api/auth", authRoutes);
 
 app.listen(PORT, async () => {
-    console.log(`Server is running on port ${PORT}`.bgCyan);
     await database();
+    console.log(`Server is running on port ${PORT}`.bgBlue);
 })
