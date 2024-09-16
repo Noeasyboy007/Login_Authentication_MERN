@@ -3,8 +3,9 @@ const bcrypt = require('bcryptjs');
 const userModel = require('../models/user.model');
 const generateVerificationToken = require('../utils/generateVerificationToken');
 const generateTokenAndSetCookie = require('../utils/generateTokenAndSetCookie');
+const { sendVerificationmail, sendWelcomemail } = require('../mailtrap/email');
 
-
+// For Signup User
 const signup = async (req, res) => {
     const { name, email, password } = req.body;
 
@@ -59,6 +60,39 @@ const signup = async (req, res) => {
     }
 }
 
+// For Verify Email Address
+const verifyEmail = async (req, res) => {
+    // passes the verification code form frontend the recived code in email address
+    const { code } = req.body;
+    try {
+        const user = await userModel.findOne({
+            verificationToken: code,
+            verificationTokenExpiresAt: { $gt: Date.now() },
+        })
+
+        // Checke the verification code is correct or expired
+        if (!user) {
+            return res.status(400).json({ success: false, message: "Invalid or expired Verification Code" });
+        }
+
+        // update the database
+        user.isVerified = true;
+        user.verificationToken = undefined;
+        user.verificationTokenExpiresAt = undefined;
+
+        // save the updated user
+        await user.save();
+
+        // Send Welcome email notification to signup user
+        await sendWelcomemail(user.email, user.name)
+
+
+    } catch (error) {
+
+    }
+
+}
+
 const login = async (req, res) => {
     res.send("login route")
 }
@@ -67,4 +101,4 @@ const logout = async (req, res) => {
     res.send("logout route")
 }
 
-module.exports = { signup, login, logout }
+module.exports = { signup, login, logout, verifyEmail }

@@ -6,7 +6,7 @@ const sendVerificationmail = async (email, verificationToken) => {
 
     try {
         const response = await mailtrapClient.send({
-            form: Sender,
+            from: Sender,
             to: recipient,
             subject: "Verify your email",
             html: VERIFICATION_EMAIL_TEMPLATE.replace("{verificationCode}", verificationToken),
@@ -14,7 +14,12 @@ const sendVerificationmail = async (email, verificationToken) => {
         })
         console.log("Verification email sent successfully", response);
     } catch (error) {
-        condole.error("Verification email sent", error);
+        console.error("Verification email sent", error);
         throw new Error(`Error sending verification email: ${error.message}`);
     }
 }
+
+const sendWelcomemail = async () => {
+
+}
+module.exports = { sendVerificationmail, sendWelcomemail }
