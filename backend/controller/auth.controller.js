@@ -41,6 +41,8 @@ const signup = async (req, res) => {
         // Set JWT Token
         generateTokenAndSetCookie(res, user._id);
 
+        //
+
         // For response Messege Code
         res.status(201).json({
             success: true, message: "New User signup successfully",
