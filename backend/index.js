@@ -3,6 +3,7 @@ const colors = require('colors');
 const dotenv = require('dotenv');
 
 const database = require('./connection/database');
+const authRoutes = require('./routes/auth.routes');
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ const PORT = process.env.PORT || 3000;
 app.get("/", (req, res) => {
     res.send("Welcome");
 })
+
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT, async () => {
     console.log(`Server is running on port ${PORT}`.bgCyan);
