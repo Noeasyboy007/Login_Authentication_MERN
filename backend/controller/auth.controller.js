@@ -86,6 +86,10 @@ const verifyEmail = async (req, res) => {
         // Send Welcome email notification to signup user
         await sendWelcomemail(user.email, user.name)
 
+        // For response Messege Code
+        res.status(200).json({ success: true, message: "Email Verification successful" });
+        console.log("Email Verification successful");
+
 
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });

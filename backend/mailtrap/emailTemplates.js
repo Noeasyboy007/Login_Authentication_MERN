@@ -28,6 +28,46 @@ const VERIFICATION_EMAIL_TEMPLATE = `
 </html>
 `;
 
+const WELCOME_EMAIL_TEMPLATE = `<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Our Service</title>
+</head>
+
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        
+        <!-- Header -->
+        <div style="background-color: #4CAF50; padding: 10px; border-radius: 8px 8px 0 0; color: white; text-align: center;">
+            <h1 style="margin: 0;">Welcome, {name}!</h1>
+        </div>
+
+        <!-- Content -->
+        <div style="padding: 20px; text-align: left;">
+            <h3>Dear</h3>
+            <p>We're thrilled to have you on board. Thank you for logging in to our service!</p>
+            <p>If you have any questions or need assistance, feel free to <a href="https://www.linkedin.com/in/aritra-bera-86b4a0229/" style="color: #4CAF50; text-decoration: none;">contact our support team</a>.</p>
+            <p>To get started, visit your dashboard:</p>
+            <p>
+                <a href="{{dashboard_link}}" style="display: inline-block; padding: 10px 15px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
+            </p>
+            <p>Best regards,<br>The Aritra DEV Team</p>
+        </div>
+
+        <!-- Footer -->
+        <div style="padding: 10px; text-align: center; font-size: 12px; color: #777;">
+            <p>&copy; 2024 Aritra DEV. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+
+</html>
+`
+
 const PASSWORD_RESET_SUCCESS_TEMPLATE = `
 <!DOCTYPE html>
 <html lang="en">
@@ -97,6 +137,7 @@ const PASSWORD_RESET_REQUEST_TEMPLATE = `
 
 module.exports = {
   VERIFICATION_EMAIL_TEMPLATE,
+  WELCOME_EMAIL_TEMPLATE,
   PASSWORD_RESET_SUCCESS_TEMPLATE,
   PASSWORD_RESET_REQUEST_TEMPLATE
 }
