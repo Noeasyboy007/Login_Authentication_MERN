@@ -1,7 +1,12 @@
 const express = require("express");
-const { signup, login, logout, verifyEmail, forgotPassword, resetPassword } = require("../controller/auth.controller");
+const { signup, login, logout, verifyEmail, forgotPassword, resetPassword,checkAuth } = require("../controller/auth.controller");
+const verifyToken = require("../middleware/verifyToken");
+
 
 const router = express.Router();
+
+// for Middleware to  check is user login authenticated or not
+router.get("/check-auth", verifyToken, checkAuth)
 
 router.post("/signup", signup);
 

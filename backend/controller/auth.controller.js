@@ -242,4 +242,27 @@ const resetPassword = async (req, res) => {
     }
 };
 
-module.exports = { signup, login, logout, verifyEmail, forgotPassword, resetPassword }
+// Check Authentication
+const checkAuth = async (req, res) => {
+    try {
+        const user = await userModel.findById(req.userId);
+
+        if (!user) {
+            return res.status(401).json({ success: false, message: "User not found" });
+        }
+
+        res.json({
+            success: true, user: {
+                ...user._doc,
+                password: undefined,
+            }
+        });
+        console.log("User is authenticated :- 10");
+
+    } catch (error) {
+        console.log("Error in checkAuth", error);
+        res.status(400).json({ success: false, message: error.message });
+    }
+};
+
+module.exports = { signup, login, logout, verifyEmail, forgotPassword, resetPassword, checkAuth }
