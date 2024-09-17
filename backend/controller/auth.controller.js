@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const userModel = require('../models/user.model');
 const generateVerificationToken = require('../utils/generateVerificationToken');
 const generateTokenAndSetCookie = require('../utils/generateTokenAndSetCookie');
-const { sendVerificationmail, sendWelcomemail } = require('../mailtrap/email');
+const { sendVerificationmail, sendWelcomemail, sendResetPasswordEmail } = require('../mailtrap/email');
 
 // FOR SIGNUP USER
 const signup = async (req, res) => {

@@ -35,4 +35,8 @@ const sendWelcomemail = async (email, name) => {
         throw new Error(`Error sending verification email: ${error.message}`);
     }
 }
-module.exports = { sendVerificationmail, sendWelcomemail }
+
+const sendResetPasswordEmail = async (email, resetToken) => {
+
+}
+module.exports = { sendVerificationmail, sendWelcomemail, sendResetPasswordEmail }
