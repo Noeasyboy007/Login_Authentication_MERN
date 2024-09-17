@@ -18,18 +18,17 @@ const signup = async (req, res) => {
         // Check if email already exists
         const userAlreadyExists = await userModel.findOne({ email });
         // console.log("user already exists", userAlreadyExists);
-
         if (userAlreadyExists) {
             return res.status(400).json({ success: false, message: "Email already exists" });
         }
 
-        // hash password using bcryptjs
+        // hash the password using bcryptjs algorithm
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // For Verification Code
+        // generate a verification code in Database 
         const verificationToken = generateVerificationToken();
 
-        // for Saved the user 
+        // for Saved the user data
         const user = new userModel({
             name,
             email,
@@ -39,7 +38,7 @@ const signup = async (req, res) => {
         })
         await user.save();
 
-        // Set JWT Token
+        // Set JWT Token and cookies in browser
         generateTokenAndSetCookie(res, user._id);
 
         //send verification Token in User mail -> using mailtrap
@@ -93,16 +92,61 @@ const verifyEmail = async (req, res) => {
 
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
+        console.log("Error: " + error.message);
     }
 
 }
 
+// FOR LOGIN USER
 const login = async (req, res) => {
-    res.send("login route")
+    const { email, password } = req.body;
+    try {
+        // Check if user have accout or valid email address
+        const user = await userModel.findOne({ email: email });
+        if (!user) {
+            return res.status(401).json({ success: false, message: "Email not found" });
+        }
+
+        // Check if password is correct  or valid
+        const isPasswordvalid = await bcrypt.compare(password, user.password);
+        if (!isPasswordvalid) {
+            return res.status(401).json({ success: false, message: "Incorrect password" });
+        }
+
+        // For set cookies
+        generateTokenAndSetCookie(res, user._id);
+
+        // user last login
+        user.lastLogin = new Date();
+
+        // save the login user
+        await user.save();
+
+        // For response Messege Code
+        res.status(200).json({
+            success: true, message: "Login successful", user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                lastLogin: user.lastLogin
+            }
+        });
+
+        console.log("Login successful");
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+        console.log("Error: " + error.message);
+    }
+
 }
 
+// FOR LOGOUT
 const logout = async (req, res) => {
-    res.send("logout route")
+    res.clearCookie("token")
+    res.status(200).json({ success: true, message: "Logout successful" });
+    console.log("Logout successful");
+
 }
 
 module.exports = { signup, login, logout, verifyEmail }
