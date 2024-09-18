@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion"
 import { User, Mail, Lock } from "lucide-react"
+import { Link } from "react-router-dom";
 
 import InputForm from "../components/InputForm";
 
@@ -58,16 +59,32 @@ const SignupPage = () => {
                     />
 
                     {/* for password meter */}
+
+                    {/* For Signup Button */}
                     <motion.button
                         className='mt-5 w-full py-3 px-4 bg-gradient-to-r from-purple-500 to-violet-600 text-white 
 						font-bold rounded-lg shadow-lg hover:from-purple-600
 						hover:to-violet-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2
 						 focus:ring-offset-gray-900 transition duration-200'
-
-                    ></motion.button>
-
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        type='submit'
+                    >
+                        Signup
+                    </motion.button>
                 </form>
             </div>
+
+            {/* Already have an account Linkk Section*/}
+            <div className='px-8 py-4 bg-gray-950 bg-opacity-50 flex justify-center'>
+                <p className='text-sm text-gray-400'>
+                    Already have an account?{" "}
+                    <Link to={"/login"} className='text-purple-400 hover:underline'>
+                        Login
+                    </Link>
+                </p>
+            </div>
+
         </motion.div>
     )
 }
