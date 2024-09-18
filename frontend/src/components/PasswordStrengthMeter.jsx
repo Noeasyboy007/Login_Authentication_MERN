@@ -1,5 +1,5 @@
 import { Check, X } from "lucide-react"
-const PasswordCriteria = ({ password }) => {
+const PasswordCriteria = ({ password = "" }) => {
 
     const criteria = [
         { label: "At least 6 characters", met: password.length >= 6 },
@@ -32,6 +32,7 @@ const PasswordStrengthMeter = ({ password }) => {
 
     const getStrength = (pass) => {
         let strength = 0;
+        if (!pass) return strength;
         if (pass.length >= 6) strength++;
         if (pass.match(/[a-z]/) && pass.match(/[A-Z]/)) strength++;
         if (pass.match(/\d/)) strength++;
