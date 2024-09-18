@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from 'react';
 import { motion } from "framer-motion"
-import { Lock, Mail, Loader } from "lucide-react"
+import { Lock, Mail, } from "lucide-react"
 import { Link } from 'react-router-dom';
 
 import InputForm from '../components/InputForm';
@@ -14,7 +14,6 @@ const LoginPage = () => {
   // Login Submit Function
   const handleLogin = async (e) => {
     e.preventDefault();
-    // Here icall backend API to check the credentials
   }
 
   return (
