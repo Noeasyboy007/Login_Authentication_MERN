@@ -14,9 +14,9 @@ const SignupPage = () => {
     }
 
     // For state And Value
-    const [name, setName] = useState();
-    const [mail, setMail] = useState();
-    const [password, setpassword] = useState();
+    const [name, setName] = useState("");
+    const [mail, setMail] = useState("");
+    const [password, setpassword] = useState("");
 
     return (
         <motion.div
