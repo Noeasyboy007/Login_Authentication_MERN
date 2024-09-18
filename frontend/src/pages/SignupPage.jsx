@@ -30,7 +30,7 @@ const SignupPage = () => {
                 <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-violet-300 to-violet-500 text-transparent bg-clip-text">Create Account</h2>
 
                 {/* For Text input Form */}
-                <form onSubmit={handelSignup}>
+                <form onSubmit={handelSignup} className='flex flex-col space-y-4'>
 
                     {/* For Name */}
                     <InputForm
@@ -56,8 +56,7 @@ const SignupPage = () => {
                         type="password"
                         placeholder="Password"
                         value={password}
-                        onChange={(e) => setpassword(e.target.value)}
-                    />
+                        onChange={(e) => setpassword(e.target.value)} />
 
                     {/* for password meter */}
                     <PasswordStrengthMeter password={password} />
