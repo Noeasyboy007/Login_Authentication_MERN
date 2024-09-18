@@ -1,4 +1,8 @@
+import { Route, Routes } from "react-router-dom"
+
 import FlotingShape from "./components/FlotingShape"
+import SignupPage from "./pages/SignupPage.jsx"
+import LoginPage from "./pages/LoginPage.jsx"
 
 function App() {
 
@@ -8,6 +12,13 @@ function App() {
       <FlotingShape color="bg-purple-300" size="w-64 h-64" top="-5%" left="10%" delay={0} />
       <FlotingShape color="bg-purple-300" size="w-48 h-48" top="40%" left="60%" delay={5} />
       <FlotingShape color="bg-purple-300" size="w-32 h-32" top="50%" left="5%" delay={2} />
+
+      <Routes>
+        {/* Here all routes */}
+        <Route path="/" element={"Home Page"} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login" element={<LoginPage />} />
+      </Routes>
     </div>
   )
 }
