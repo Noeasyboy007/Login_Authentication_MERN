@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from 'react';
 import { motion } from "framer-motion"
-import { Lock, Mail, } from "lucide-react"
+import { Lock, Mail, Loader } from "lucide-react"
 import { Link } from 'react-router-dom';
 
 import InputForm from '../components/InputForm';
@@ -10,6 +10,7 @@ const LoginPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const isLoading = false;
 
   // Login Submit Function
   const handleLogin = async (e) => {
@@ -59,15 +60,16 @@ const LoginPage = () => {
             </Link>
           </div>
 
-
-          {/* For Submit button */}
+          {/* For login button */}
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className='w-full py-3 px-4 bg-gradient-to-r from-purple-500 to-violet-600 text-white font-bold rounded-lg shadow-lg hover:from-purple-600 hover:to-violet-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200'
             type='submit'
+            disabled={isLoading}
           >
-            Login
+            {isLoading ? <Loader className='w-6 h-6 animate-spin  mx-auto' /> : "Login"}
+
           </motion.button>
 
         </form>
