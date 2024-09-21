@@ -2,6 +2,7 @@ const express = require('express');
 const colors = require('colors');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const database = require('./connection/database');
 const authRoutes = require('./routes/auth.routes');
@@ -9,6 +10,13 @@ const authRoutes = require('./routes/auth.routes');
 dotenv.config();
 
 const app = express();
+
+// allow to cors origin for frontend to request handle
+
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
 
 // allow us to parse incoming request:req.body
 app.use(express.json());

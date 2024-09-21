@@ -1,7 +1,10 @@
 import { create } from 'zustand';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api/auth/'
+const API_URL = 'http://localhost:8000/api/auth/';
+axios.defaults.withCredentials = true;
+
+// Auth Store Hook for Zustand
 export const useAuthStore = create((set) => ({
     user: null,
     isAuthenticated: false,
@@ -17,7 +20,7 @@ export const useAuthStore = create((set) => ({
             const response = await axios.post(`${API_URL}/signup`, { email, password, name });
             set({ user: response.data.user, isAuthenticated: true, isLoading: false });
         } catch (error) {
-            set({error: error.response.message ||"Error Signup", isLoading: false});
+            set({ error: error.response.message || "Error Signup", isLoading: false });
             throw error
         }
     }

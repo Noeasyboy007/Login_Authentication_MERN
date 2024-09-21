@@ -1,22 +1,34 @@
 import { useState } from "react";
 import { motion } from "framer-motion"
-import { User, Mail, Lock } from "lucide-react"
-import { Link } from "react-router-dom";
+import { User, Mail, Lock, Loader } from "lucide-react"
+import { Link, useNavigate } from "react-router-dom";
 
 import InputForm from "../components/InputForm";
 import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
+import { useAuthStore } from "../store/authStore";
 
 const SignupPage = () => {
-
-    // For form onSubmit Function
-    const handelSignup = (e) => {
-        e.preventDefult();
-    }
 
     // For state And Value
     const [name, setName] = useState("");
     const [mail, setMail] = useState("");
     const [password, setpassword] = useState("");
+    const navigate = useNavigate();
+    const { signup, error, isLoading } = useAuthStore();
+
+    // For form onSubmit Function
+    const handelSignup = async (e) => {
+        e.preventDefault();
+        try {
+            await signup(mail, password, name)
+            navigate('/verify-email')
+            console.log('sucessfully send verification code to your email address');
+            
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
 
     return (
         <motion.div
@@ -56,7 +68,11 @@ const SignupPage = () => {
                         type="password"
                         placeholder="Password"
                         value={password}
-                        onChange={(e) => setpassword(e.target.value)} />
+                        onChange={(e) => setpassword(e.target.value)}
+                    />
+
+                    {/* for Error message */}
+                    {error && <p className='text-red-600 text-xs'>{error}</p>}
 
                     {/* for password meter */}
                     <PasswordStrengthMeter password={password} />
@@ -70,8 +86,9 @@ const SignupPage = () => {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         type='submit'
+                        disabled={isLoading}
                     >
-                        Signup
+                        {isLoading ? <Loader className="animate-spin mx-auto" size={22} /> : "Signup"}
                     </motion.button>
                 </form>
             </div>

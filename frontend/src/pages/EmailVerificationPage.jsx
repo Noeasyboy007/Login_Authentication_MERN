@@ -57,6 +57,7 @@ const EmailVerificationPage = () => {
         if (code.every(digit => digit !== '')) {
             handleSubmit(new Event('submit'));
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [code])
 
     return (
