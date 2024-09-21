@@ -2,13 +2,14 @@ import { motion } from 'framer-motion';
 import { Loader } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../store/authStore';
+import toast from 'react-hot-toast';
 
 const EmailVerificationPage = () => {
     const [code, setCode] = useState(["", "", "", "", "", ""]);
     const inputRefs = useRef([]);
     const navigate = useNavigate();
-    // const [loading, isLoading] = (false)
-    const isLoading = false;
+    const { error, isLoading, verifyEmail } = useAuthStore();
 
 
     const handleChange = (index, value) => {
@@ -35,29 +36,41 @@ const EmailVerificationPage = () => {
                 inputRefs.current[index + 1].focus();
             }
         }
-    }
+    };
 
     // For BackSpace Key
     const handleKeyDown = (index, e) => {
         if (e.key === "Backspace" && !code[index] && index > 0) {
             inputRefs.current[index - 1].focus();
         }
-    }
+    };
 
     // For form Submit Function
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const verificationCode = code.join("");
-        // alert('Verification code SUbmitted: ' + verificationCode)
-        console.log('Verification code SUbmitted: ' + verificationCode);
-    }
+        try {
+            await verifyEmail(verificationCode);
+            console.log('Email verify successfully');
+            navigate('/login')
+            toast.success('Email verify successfully', {
+                style: {
+                    background: 'purple',   
+                    color: '#fff',         
+                },
+            })
+        } catch (error) {
+            console.log('Invaild or Expired Verification Code' + error);
+            toast.error('Invaild or Expired Verification Code')
+        }
+    };
 
     // Auto SUbmit When all fields are filled
     useEffect(() => {
         if (code.every(digit => digit !== '')) {
             handleSubmit(new Event('submit'));
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [code])
 
     return (
@@ -89,6 +102,9 @@ const EmailVerificationPage = () => {
                                 className='w-12 h-12 text-center text-2xl font-bold bg-gray-700 text-white border-2 border-gray-600 rounded-lg focus:border-purple-500 focus:outline-none' />
                         ))}
                     </div>
+
+                    {/* for Error message */}
+                    {error && <p className='text-red-600 text-xs'>{error}</p>}
 
                     {/* For Submit button */}
                     <motion.button

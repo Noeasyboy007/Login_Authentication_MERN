@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import InputForm from "../components/InputForm";
 import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
 import { useAuthStore } from "../store/authStore";
+import toast from "react-hot-toast";
 
 const SignupPage = () => {
 
@@ -22,12 +23,17 @@ const SignupPage = () => {
         try {
             await signup(mail, password, name)
             navigate('/verify-email')
-            console.log('sucessfully send verification code to your email address');
-            
+            console.log('Send a verification code to your email address');
+            toast.success("Send a verification code to your email address", {
+                style: {
+                    background: 'purple',   
+                    color: '#fff',
+                },
+            })
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 
 
     return (

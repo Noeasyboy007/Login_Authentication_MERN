@@ -20,8 +20,22 @@ export const useAuthStore = create((set) => ({
             const response = await axios.post(`${API_URL}/signup`, { email, password, name });
             set({ user: response.data.user, isAuthenticated: true, isLoading: false });
         } catch (error) {
-            set({ error: error.response.message || "Error Signup", isLoading: false });
+            set({ error: error.response.message || "Error in Signup", isLoading: false });
             throw error
         }
-    }
-}))
+    },
+
+    // email verification function
+    verifyEmail: async (code) => {
+        set({ isLoading: true, error: null });
+
+        try {
+            const response = await axios.post(`${API_URL}/verify-email`, { code });
+            set({ user: response.data.user, isAuthenticated: true, isLoading: false });
+            return response.data;
+        } catch (error) {
+            set({ error: error.response.message || "Invaild or expired verification code", isLoading: false });
+            throw error
+        }
+    },
+}));
