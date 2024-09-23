@@ -55,12 +55,12 @@ export const useAuthStore = create((set) => ({
     login: async (email, password) => {
         set({ isLoading: true, error: null });
         try {
-            const response = await axios.get(`${API_URL}/login`{ email, password });
+            const response = await axios.get(`${API_URL}/login`,{ email, password });
             set({ user: response.data.user, isAuthenticated: true, isLoading: false, error: null });
         } catch (error) {
             set({ error: error.response?.data?.message || "Error is Loading", isLoading: false });
         }
     }
 
-    
+
 }));
