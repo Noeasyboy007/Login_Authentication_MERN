@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import { useEffect } from "react"
 import { Toaster } from "react-hot-toast"
 
@@ -10,6 +10,17 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx"
 import EmailVerificationPage from "./pages/EmailVerificationPage.jsx"
 
 import { useAuthStore } from "./store/authStore.js"
+
+
+// for Re-direct authenticated users to home page and user not change there url dynamic until logout
+const RedirectAuthenticatedUser = ({ children }) => {
+  const { isAuthenticated, user } = useAuthStore();
+
+  if (isAuthenticated && user.isVerified) {
+    return <Navigate to="/" replace />
+  }
+  return children;
+}
 
 function App() {
   const { checkAuth, isCheckingAuth, isAuthenticated, user } = useAuthStore();
@@ -32,8 +43,8 @@ function App() {
       <Routes>
         {/* Here all routes */}
         <Route path="/" element={"Home Page"} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<RedirectAuthenticatedUser><SignupPage /></RedirectAuthenticatedUser>} />
+        <Route path="/login" element={<RedirectAuthenticatedUser><LoginPage /></RedirectAuthenticatedUser>} />
         <Route path="/verify-email" element={<EmailVerificationPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       </Routes>
