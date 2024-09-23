@@ -44,7 +44,7 @@ function App() {
   }, [checkAuth]);
 
   if (isCheckingAuth) return <LoadingSpinner />;
-  
+
   console.log("User Login Successfully");
   console.log("isAuthenticated", isAuthenticated);
   console.log("Uer data :-", user);
@@ -64,7 +64,7 @@ function App() {
         <Route path="/signup" element={<RedirectAuthenticatedUser><SignupPage /></RedirectAuthenticatedUser>} />
         <Route path="/login" element={<RedirectAuthenticatedUser><LoginPage /></RedirectAuthenticatedUser>} />
         <Route path="/verify-email" element={<RedirectAuthenticatedUser><EmailVerificationPage /></RedirectAuthenticatedUser>} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/forgot-password" element={<RedirectAuthenticatedUser><ForgotPasswordPage /></RedirectAuthenticatedUser>} />
       </Routes>
       <Toaster />
     </div>

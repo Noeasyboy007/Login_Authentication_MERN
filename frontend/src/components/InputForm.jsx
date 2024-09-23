@@ -15,4 +15,4 @@ const InputForm = ({ icon: Icon, ...props }) => {
     )
 }
 
-export default InputForm
+export default InputForm;

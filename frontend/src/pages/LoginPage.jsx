@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from 'react';
-import { motion } from "framer-motion"
-import { Lock, Mail, Loader } from "lucide-react"
+import { motion } from "framer-motion";
+import { Lock, Mail, Loader } from "lucide-react";
 import { Link, useNavigate } from 'react-router-dom';
 import toast from "react-hot-toast";
 
