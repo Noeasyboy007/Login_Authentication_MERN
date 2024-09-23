@@ -20,14 +20,20 @@ const LoginPage = () => {
   // Login Submit Function
   const handleLogin = async (e) => {
     e.preventDefault();
-    await login(email, password)
-    navigate("/");
-    toast.success("Successfully Login", {
-      style: {
-        background: 'purple',
-        color: '#fff',
-      },
-    })
+    try {
+      await login(email, password);
+      // Wait for the user to log in successfully, then navigate
+      navigate("/");
+      toast.success("Successfully logged in!", {
+        style: {
+          background: 'purple',
+          color: '#fff',
+        },
+      });
+    } catch (error) {
+      toast.error("Login failed");
+      console.log(error.message);
+    }
   }
 
   return (

@@ -11,6 +11,7 @@ import EmailVerificationPage from "./pages/EmailVerificationPage.jsx"
 import DashBoardPage from "./pages/DashBoardPage.jsx"
 
 import { useAuthStore } from "./store/authStore.js"
+import LoadingSpinner from "./components/LoadingSpinner .jsx"
 
 // Protected Route that for authentication
 const ProtectedRoute = ({ children }) => {
@@ -19,10 +20,9 @@ const ProtectedRoute = ({ children }) => {
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />
   }
-  if (user.isVerified) {
-    return <Navigate to="/email-verification" replace />
+  if (!user.isVerified) {
+    return <Navigate to="/verify-email" replace />
   }
-
   return children;
 }
 
@@ -37,14 +37,18 @@ const RedirectAuthenticatedUser = ({ children }) => {
 }
 
 function App() {
-  const { checkAuth, isCheckingAuth, isAuthenticated, user } = useAuthStore();
+  const { checkAuth, isAuthenticated, user, isCheckingAuth } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
+  if (isCheckingAuth) return <LoadingSpinner />;
+  
+  console.log("User Login Successfully");
   console.log("isAuthenticated", isAuthenticated);
-  console.log("user login", user);
+  console.log("Uer data :-", user);
+  // console.log("user login", user);
 
 
   return (
@@ -59,7 +63,7 @@ function App() {
         <Route path="/" element={<ProtectedRoute><DashBoardPage /></ProtectedRoute>} />
         <Route path="/signup" element={<RedirectAuthenticatedUser><SignupPage /></RedirectAuthenticatedUser>} />
         <Route path="/login" element={<RedirectAuthenticatedUser><LoginPage /></RedirectAuthenticatedUser>} />
-        <Route path="/verify-email" element={<EmailVerificationPage />} />
+        <Route path="/verify-email" element={<RedirectAuthenticatedUser><EmailVerificationPage /></RedirectAuthenticatedUser>} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       </Routes>
       <Toaster />
