@@ -44,7 +44,7 @@ export const useAuthStore = create((set) => ({
     // Check-Auth Function
     checkAuth: async () => {
         await new Promise((resolve) => setTimeout(resolve, 2000));
-        
+
         set({ isCheckingAuth: true, error: null });
         try {
             const response = await axios.get(`${API_URL}/check-auth`)
@@ -67,6 +67,18 @@ export const useAuthStore = create((set) => ({
             set({ error: error.response?.data?.message || "Error is Loging", isLoading: false });
             throw error;
         }
-    }
+    },
+
+    // For logout Function
+    logout: async () => {
+        set({ isLoading: true, error: null });
+        try {
+            await axios.post(`${API_URL}/logout`);
+            set({ user: null, isAuthenticated: false, error: null, isLoading: false });
+        } catch (error) {
+            set({ error: "Error logging out", isLoading: false });
+            throw error;
+        }
+    },
 
 }));
