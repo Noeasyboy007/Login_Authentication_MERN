@@ -8,11 +8,25 @@ import SignupPage from "./pages/SignupPage.jsx"
 import LoginPage from "./pages/LoginPage.jsx"
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx"
 import EmailVerificationPage from "./pages/EmailVerificationPage.jsx"
+import DashBoardPage from "./pages/DashBoardPage.jsx"
 
 import { useAuthStore } from "./store/authStore.js"
 
+// Protected Route that for authentication
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated, user } = useAuthStore();
 
-// for Re-direct authenticated users to home page and user not change there url dynamic until logout
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />
+  }
+  if (!user.isVerified) {
+    return <Navigate to="/email-verification" replace />
+  }
+
+  return children;
+}
+
+// for Re-direct authenticated users to home page whrn user signup and user not change there url dynamic until logout
 const RedirectAuthenticatedUser = ({ children }) => {
   const { isAuthenticated, user } = useAuthStore();
 
@@ -42,7 +56,7 @@ function App() {
 
       <Routes>
         {/* Here all routes */}
-        <Route path="/" element={"Home Page"} />
+        <Route path="/" element={<ProtectedRoute><DashBoardPage /></ProtectedRoute>} />
         <Route path="/signup" element={<RedirectAuthenticatedUser><SignupPage /></RedirectAuthenticatedUser>} />
         <Route path="/login" element={<RedirectAuthenticatedUser><LoginPage /></RedirectAuthenticatedUser>} />
         <Route path="/verify-email" element={<EmailVerificationPage />} />
