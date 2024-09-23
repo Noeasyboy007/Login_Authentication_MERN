@@ -1,4 +1,6 @@
 import { Route, Routes } from "react-router-dom"
+import { useEffect } from "react"
+import { Toaster } from "react-hot-toast"
 
 import FlotingShape from "./components/FlotingShape"
 
@@ -6,9 +8,19 @@ import SignupPage from "./pages/SignupPage.jsx"
 import LoginPage from "./pages/LoginPage.jsx"
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx"
 import EmailVerificationPage from "./pages/EmailVerificationPage.jsx"
-import { Toaster } from "react-hot-toast"
+
+import { useAuthStore } from "./store/authStore.js"
 
 function App() {
+  const { checkAuth, isCheckingAuth, isAuthenticated, user } = useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  console.log("isAuthenticated", isAuthenticated);
+  console.log("user", user);
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-purple-700 to-purple-950 flex items-center justify-center relative overflow-hidden">

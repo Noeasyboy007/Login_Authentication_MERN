@@ -52,7 +52,7 @@ const EmailVerificationPage = () => {
         try {
             await verifyEmail(verificationCode);
             console.log('Email verify successfully');
-            navigate('/login')
+            navigate('/')
             toast.success('Email verify successfully', {
                 style: {
                     background: 'purple',   
