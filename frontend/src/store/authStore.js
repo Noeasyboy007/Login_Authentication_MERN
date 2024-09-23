@@ -25,7 +25,7 @@ export const useAuthStore = create((set) => ({
         }
     },
 
-    // email verification function
+    // email-verification function
     verifyEmail: async (code) => {
         set({ isLoading: true, error: null });
 
@@ -39,7 +39,7 @@ export const useAuthStore = create((set) => ({
         }
     },
 
-    // Check Auth Function
+    // Check-Auth Function
     checkAuth: async () => {
         set({ isCheckingAuth: true, error: null });
         try {
