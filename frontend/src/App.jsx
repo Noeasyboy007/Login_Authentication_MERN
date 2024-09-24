@@ -16,12 +16,12 @@ import LoadingSpinner from "./components/LoadingSpinner .jsx"
 
 // Protected Route that for authentication
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, isVerified } = useAuthStore();
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />
   }
-  if (!user.isVerified) {
+  if (!isVerified) {
     return <Navigate to="/verify-email" replace />
   }
   return children;
@@ -29,16 +29,16 @@ const ProtectedRoute = ({ children }) => {
 
 // for Re-direct authenticated users to home page whrn user signup and user not change there url dynamic until logout
 const RedirectAuthenticatedUser = ({ children }) => {
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, isVerified } = useAuthStore();
 
-  if (isAuthenticated && user.isVerified) {
+  if (isAuthenticated && isVerified) {
     return <Navigate to="/" replace />
   }
   return children;
 }
 
 function App() {
-  const { checkAuth, isAuthenticated, user, isCheckingAuth } = useAuthStore();
+  const { checkAuth, isAuthenticated, isVerified, isCheckingAuth } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
@@ -48,7 +48,7 @@ function App() {
 
   console.log("User Login Successfully");
   console.log("isAuthenticated", isAuthenticated);
-  console.log("Uer data :-", user);
+  console.log("isVerified :-", isVerified);
   // console.log("user login", user);
 
 

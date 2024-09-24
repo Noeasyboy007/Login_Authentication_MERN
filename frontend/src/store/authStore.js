@@ -13,7 +13,6 @@ export const useAuthStore = create((set) => ({
     isCheckingAuth: true,
     isVerified: false,
     message: null,
-    // isVerified: false,
 
     // Signup Function
     signup: async (email, password, name) => {
@@ -34,7 +33,7 @@ export const useAuthStore = create((set) => ({
 
         try {
             const response = await axios.post(`${API_URL}/verify-email`, { code });
-            set({ user: response.data.user, isAuthenticated: true, isLoading: false, });
+            set({ user: response.data.user, isAuthenticated: true, isLoading: false, isVerified: true });
             return response.data;
         } catch (error) {
             set({ error: error.response.message || "Invaild or expired verification code", isLoading: false });
@@ -44,15 +43,18 @@ export const useAuthStore = create((set) => ({
 
     // Check-Auth Function
     checkAuth: async () => {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-
         set({ isCheckingAuth: true, error: null });
-        try {
-            const response = await axios.get(`${API_URL}/check-auth`)
-            set({ user: response.data.user, isAuthenticated: true, isCheckingAuth: false, });
 
+        try {
+            const response = await axios.get(`${API_URL}/check-auth`);
+            set({ user: response.data.user, isAuthenticated: true, isCheckingAuth: false, isVerified: true });
         } catch (error) {
-            set({ error: error.message || null, isCheckingAuth: false, isAuthenticated: false });
+            // Check if the error is a 401 Unauthorized
+            if (error.response?.status === 401) {
+                set({ error: "Unauthorized access. Please log in.", isAuthenticated: false, isCheckingAuth: false, user: null });
+            } else {
+                set({ error: error.message || "Failed to check authentication.", isAuthenticated: false, isCheckingAuth: false });
+            }
         }
     },
 
@@ -63,7 +65,7 @@ export const useAuthStore = create((set) => ({
         set({ isLoading: true, error: null });
         try {
             const response = await axios.post(`${API_URL}/login`, { email, password });
-            set({ user: response.data.user, isAuthenticated: true, isLoading: false, error: null, });
+            set({ user: response.data.user, isAuthenticated: true, isLoading: false, error: null, isVerified: true });
         } catch (error) {
             set({ error: error.response?.data?.message || "Error is Loging", isLoading: false });
             throw error;
@@ -104,5 +106,6 @@ export const useAuthStore = create((set) => ({
             set({ isLoading: false, error: error.response.data.message || "Error in reset password" });
             throw error;
         }
+
     }
 }));
