@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage.jsx"
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx"
 import EmailVerificationPage from "./pages/EmailVerificationPage.jsx"
 import DashBoardPage from "./pages/DashBoardPage.jsx"
+import ResetPasswordPage from "./pages/ResetPasswordPage.jsx"
 
 import { useAuthStore } from "./store/authStore.js"
 import LoadingSpinner from "./components/LoadingSpinner .jsx"
@@ -65,6 +66,7 @@ function App() {
         <Route path="/login" element={<RedirectAuthenticatedUser><LoginPage /></RedirectAuthenticatedUser>} />
         <Route path="/verify-email" element={<RedirectAuthenticatedUser><EmailVerificationPage /></RedirectAuthenticatedUser>} />
         <Route path="/forgot-password" element={<RedirectAuthenticatedUser><ForgotPasswordPage /></RedirectAuthenticatedUser>} />
+        <Route path="/resetPassword/:token" element={<RedirectAuthenticatedUser><ResetPasswordPage /></RedirectAuthenticatedUser>} />
       </Routes>
       <Toaster />
     </div>
