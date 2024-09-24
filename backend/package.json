@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "backend/index.js",
   "scripts": {
-    "dev": "nodemon backend/index.js"
+    "dev": "nodemon index.js",
+    "start" : "nodemon index.js",
+    "build": "npm install"
   },
   "author": "aritra",
   "license": "ISC",
