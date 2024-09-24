@@ -12,6 +12,7 @@ export const useAuthStore = create((set) => ({
     isLoading: false,
     isCheckingAuth: true,
     isVerified: false,
+    message: null,
     // isVerified: false,
 
     // Signup Function
@@ -83,12 +84,24 @@ export const useAuthStore = create((set) => ({
 
     // For forgot-password Function
     forgotPassword: async (email) => {
-        set({ isLoading: true, error: null, message: null })
+        set({ isLoading: true, error: null })
         try {
             const response = await axios.post(`${API_URL}/forgot-password`, { email });
             set({ message: response.data.message || "Check your email for reset link", isLoading: false });
         } catch (error) {
             set({ error: error.response?.data?.message || "Error in forgot password", isLoading: false });
+            throw error;
+        }
+    },
+
+    // Reset-Password Function
+    resetPassword: async (token, password) => {
+        set({ isLoading: true, error: null, message: null });
+        try {
+            const response = await axios.post(`${API_URL}/reset-password/${token}`, { password });
+            set({ message: response.data.message || "Password reset successful", isLoading: false });
+        } catch (error) {
+            set({ isLoading: false, error: error.response.data.message || "Error in reset password" });
             throw error;
         }
     }
